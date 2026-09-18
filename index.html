@@ -20,7 +20,7 @@
             background-color: #ffe6e6;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             text-align: center;
-            overflow: hidden; /* Prevents scrolling when the button moves */
+            overflow: hidden; /* Prevents scrollbars when button moves */
             position: relative;
             padding: 20px;
         }
@@ -34,7 +34,6 @@
             color: #d63384;
             font-size: 2.5rem;
             margin-bottom: 20px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         p {
@@ -49,14 +48,14 @@
             border-radius: 10px;
         }
 
+        /* Standard Flexbox keeps buttons separated and side-by-side initially */
         .btn-group {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 30px;
-            min-height: 80px; /* Gives space for the buttons */
-            position: relative;
+            gap: 25px; 
             width: 100%;
+            height: 60px; /* Reserves space so layout doesn't collapse */
         }
 
         button {
@@ -66,7 +65,6 @@
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: transform 0.1s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
         }
 
@@ -75,16 +73,12 @@
             color: white;
         }
 
-        #yesBtn:active {
-            transform: scale(0.95);
-        }
-
+        /* No button starts as a normal element side-by-side with Yes */
         #noBtn {
             background-color: #6c757d;
             color: white;
-            position: absolute; /* Crucial for moving around the screen */
-            transition: all 0.2s ease;
-            touch-action: none; /* Prevents default mobile scrolling behavior while dragging/tapping */
+            transition: all 0.15s ease;
+            touch-action: none; /* Crucial for mobile touch tracking */
         }
     </style>
 </head>
@@ -92,7 +86,6 @@
 
     <div class="container" id="questionContainer">
         <div class="gif-container">
-            <!-- You can replace this GIF URL with any cute gif you like -->
             <img src="https://giphy.com" alt="Cute cute">
         </div>
         <h1>Hi crush, do you love me?</h1>
@@ -110,31 +103,32 @@
         const container = document.getElementById('questionContainer');
 
         function moveNoButton() {
-            // Get safe boundaries based on screen size so the button doesn't fly off-screen
-            const padding = 20;
+            // Calculate random screen position safely
+            const padding = 30;
             const maxX = window.innerWidth - noBtn.offsetWidth - padding;
             const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
-            // Generate random X and Y coordinates within boundaries
             const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
             const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
 
-            // Apply new position globally on the screen
+            // Instantly break out of the flexbox layout container on first touch/hover
             noBtn.style.position = 'fixed';
+            
+            // Set the new coordinates
             noBtn.style.left = `${randomX}px`;
             noBtn.style.top = `${randomY}px`;
         }
 
-        // Mobile support: triggers when they try to tap it
+        // Triggers instantly on mobile screen touch
         noBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault(); // Prevents clicking action
+            e.preventDefault(); 
             moveNoButton();
         });
 
-        // Desktop support: triggers when mouse hovers
+        // Triggers on desktop hover
         noBtn.addEventListener('mouseover', moveNoButton);
 
-        // What happens when they click YES
+        // Success state
         yesBtn.addEventListener('click', () => {
             container.innerHTML = `
                 <div class="gif-container">
@@ -143,7 +137,6 @@
                 <h1 style="color: #ff4d6d;">Yayyyyy! I knew it! ❤️ 🥰</h1>
                 <p>See you on our first date!</p>
             `;
-            // Remove the floating button completely just in case
             if(document.body.contains(noBtn)) {
                 noBtn.remove();
             }
