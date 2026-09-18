@@ -1,59 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap"
-      rel="stylesheet"
-    />
-    <!-- CSS Styles Sheet -->
-    <link rel="stylesheet" href="css/styles.css" />
-    <title>Do You Love Me?</title>
-  </head>
-  <body>
-    <div class="question-container container">
-      <div
-        class="tenor-gif-embed"
-        data-postid="25789758"
-        data-share-method="host"
-        data-width="100%"
-      >
-        <a href="https://tenor.com/view/tkthao219-bubududu-gif-25789758"
-          >Tkthao219 Bubududu Sticker</a
-        >from
-        <a href="https://tenor.com/search/tkthao219-stickers"
-          >Tkthao219 Stickers</a
-        >
-      </div>
-      <script
-        type="text/javascript"
-        async
-        src="https://tenor.com/embed.js"
-      ></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Crush</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-      <h2 class="question">Do you love me?</h2>
-      <div class="button-container">
-        <button class="yes-btn btn js-yes-btn">Yes</button>
-        <button class="no-btn btn js-no-btn">No</button>
-      </div>
-    </div>
-    <div class="result-container container">
-      <video class="gif-result" src="cute-love-gif.mp4" autoplay loop></video>
-      <h2>I knew it😍!</h2>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #ffe6e6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            overflow: hidden; /* Prevents scrolling when the button moves */
+            position: relative;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 90%;
+            z-index: 10;
+        }
+
+        h1 {
+            color: #d63384;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #6c757d;
+            margin-bottom: 40px;
+        }
+
+        .gif-container img {
+            max-width: 150px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            min-height: 80px; /* Gives space for the buttons */
+            position: relative;
+            width: 100%;
+        }
+
+        button {
+            padding: 15px 35px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        #yesBtn {
+            background-color: #ff4d6d;
+            color: white;
+        }
+
+        #yesBtn:active {
+            transform: scale(0.95);
+        }
+
+        #noBtn {
+            background-color: #6c757d;
+            color: white;
+            position: absolute; /* Crucial for moving around the screen */
+            transition: all 0.2s ease;
+            touch-action: none; /* Prevents default mobile scrolling behavior while dragging/tapping */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="questionContainer">
+        <div class="gif-container">
+            <!-- You can replace this GIF URL with any cute gif you like -->
+            <img src="https://giphy.com" alt="Cute cute">
+        </div>
+        <h1>Hi crush, do you love me?</h1>
+        <p>Please say yes... 🥺</p>
+        
+        <div class="btn-group">
+            <button id="yesBtn">Yes</button>
+            <button id="noBtn">No</button>
+        </div>
     </div>
 
-    <div class="cssload-main">
-      <div class="cssload-heart">
-        <span class="cssload-heartL"></span>
-        <span class="cssload-heartR"></span>
-        <span class="cssload-square"></span>
-      </div>
-      <div class="cssload-shadow"></div>
-    </div>
-    <script src="js/script.js"></script>
-  </body>
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const container = document.getElementById('questionContainer');
+
+        function moveNoButton() {
+            // Get safe boundaries based on screen size so the button doesn't fly off-screen
+            const padding = 20;
+            const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+            const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+            // Generate random X and Y coordinates within boundaries
+            const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+
+            // Apply new position globally on the screen
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
+        }
+
+        // Mobile support: triggers when they try to tap it
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevents clicking action
+            moveNoButton();
+        });
+
+        // Desktop support: triggers when mouse hovers
+        noBtn.addEventListener('mouseover', moveNoButton);
+
+        // What happens when they click YES
+        yesBtn.addEventListener('click', () => {
+            container.innerHTML = `
+                <div class="gif-container">
+                    <img src="https://giphy.com" alt="Happy">
+                </div>
+                <h1 style="color: #ff4d6d;">Yayyyyy! I knew it! ❤️ 🥰</h1>
+                <p>See you on our first date!</p>
+            `;
+            // Remove the floating button completely just in case
+            if(document.body.contains(noBtn)) {
+                noBtn.remove();
+            }
+        });
+    </script>
+</body>
 </html>
